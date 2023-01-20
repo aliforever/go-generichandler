@@ -2,7 +2,7 @@
 A simple json event handler using generics made to save hours of my life in tens of projects
 
 ## Get
-`go get `
+`go get -u github.com/aliforever/go-generichandler`
 
 ## Example:
 ```go
