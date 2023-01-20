@@ -2,6 +2,8 @@ package generichandler
 
 import "encoding/json"
 
+type Nil struct{}
+
 type handler interface {
 	handle(message []byte) error
 }
@@ -17,9 +19,11 @@ func Handler[T any](handler func(T) error) handler {
 func (h h[T]) handle(data []byte) error {
 	var t T
 
-	err := json.Unmarshal(data, &t)
-	if err != nil {
-		return err
+	if _, ok := any(t).(Nil); !ok {
+		err := json.Unmarshal(data, &t)
+		if err != nil {
+			return err
+		}
 	}
 
 	return h.handler(t)
