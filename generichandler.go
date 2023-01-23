@@ -1,6 +1,11 @@
 package generichandler
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"errors"
+)
+
+var EmptyDataErr = errors.New("empty_data")
 
 type Nil struct{}
 
@@ -17,6 +22,10 @@ func Handler[T any](handler func(T) error) handler {
 }
 
 func (h h[T]) handle(data []byte) error {
+	if len(data) == 0 {
+		return EmptyDataErr
+	}
+
 	var t T
 
 	if _, ok := any(t).(Nil); !ok {
